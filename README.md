@@ -3,6 +3,11 @@
 **Author:** Sabiha Metlo
 **Track:** AI/ML — Full Stack AI Engineering
 
+## Screenshot
+
+![House Price Predictor](screenshots/app-demo.png.jpeg)
+
+
 ## Overview
 
 An end-to-end machine learning system that predicts house sale prices. A trained
@@ -109,6 +114,8 @@ npm install
 npm run dev
 ```
 Frontend runs at `http://localhost:5173`
+
+
 
 **Note:** both the backend and frontend must be running simultaneously (in
 separate terminals) for predictions to work.
