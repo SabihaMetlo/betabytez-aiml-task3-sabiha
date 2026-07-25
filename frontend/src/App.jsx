@@ -58,70 +58,88 @@ function App() {
   return (
     <div className="App">
       <h1>House Price Predictor</h1>
+      <p className="subtitle">Enter your house details to get an instant price estimate</p>
+
       <form onSubmit={handleSubmit}>
-        <label>Overall Quality (1-10)</label>
-        <input
-          type="number"
-          name="OverallQual"
-          value={formData.OverallQual}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Overall Quality (1-10)</label>
+          <input
+            type="number"
+            name="OverallQual"
+            value={formData.OverallQual}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label>Living Area (sq ft)</label>
-        <input
-          type="number"
-          name="GrLivArea"
-          value={formData.GrLivArea}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Living Area (sq ft)</label>
+          <input
+            type="number"
+            name="GrLivArea"
+            value={formData.GrLivArea}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label>Garage Cars</label>
-        <input
-          type="number"
-          name="GarageCars"
-          value={formData.GarageCars}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Garage Cars</label>
+          <input
+            type="number"
+            name="GarageCars"
+            value={formData.GarageCars}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label>Basement Area (sq ft)</label>
-        <input
-          type="number"
-          name="TotalBsmtSF"
-          value={formData.TotalBsmtSF}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Basement Area (sq ft)</label>
+          <input
+            type="number"
+            name="TotalBsmtSF"
+            value={formData.TotalBsmtSF}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label>Full Bathrooms</label>
-        <input
-          type="number"
-          name="FullBath"
-          value={formData.FullBath}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Full Bathrooms</label>
+          <input
+            type="number"
+            name="FullBath"
+            value={formData.FullBath}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label>Year Built</label>
-        <input
-          type="number"
-          name="YearBuilt"
-          value={formData.YearBuilt}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Year Built</label>
+          <input
+            type="number"
+            name="YearBuilt"
+            value={formData.YearBuilt}
+            onChange={handleChange}
+          />
+        </div>
 
-        <label>Neighborhood (e.g., CollgCr)</label>
-        <input
-          type="text"
-          name="Neighborhood"
-          value={formData.Neighborhood}
-          onChange={handleChange}
-        />
+        <div className="form-group full-width">
+          <label>Neighborhood (e.g., CollgCr)</label>
+          <input
+            type="text"
+            name="Neighborhood"
+            value={formData.Neighborhood}
+            onChange={handleChange}
+          />
+        </div>
 
         <button type="submit">Predict Price</button>
       </form>
 
       {prediction && (
-        <h2>Predicted Price: ${prediction.toLocaleString()}</h2>
+        <div className="result">
+          <h2>Predicted Price: ${prediction.toLocaleString()}</h2>
+        </div>
       )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <div className="error">{error}</div>}
     </div>
   );
 }
