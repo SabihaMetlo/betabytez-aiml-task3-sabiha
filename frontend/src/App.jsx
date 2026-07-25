@@ -1,122 +1,129 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Form state - holds all 7 input values together
+  const [formData, setFormData] = useState({
+    OverallQual: "",
+    GrLivArea: "",
+    GarageCars: "",
+    TotalBsmtSF: "",
+    FullBath: "",
+    YearBuilt: "",
+    Neighborhood: "",
+  });
+
+  // Prediction result and error state
+  const [prediction, setPrediction] = useState(null);
+  const [error, setError] = useState(null);
+
+  // Called every time any input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Called when the form is submitted
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setPrediction(null);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          OverallQual: Number(formData.OverallQual),
+          GrLivArea: Number(formData.GrLivArea),
+          GarageCars: Number(formData.GarageCars),
+          TotalBsmtSF: Number(formData.TotalBsmtSF),
+          FullBath: Number(formData.FullBath),
+          YearBuilt: Number(formData.YearBuilt),
+          Neighborhood: formData.Neighborhood,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Prediction failed. Please check your inputs.");
+      }
+
+      const data = await response.json();
+      setPrediction(data.predicted_price);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="App">
+      <h1>House Price Predictor</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Overall Quality (1-10)</label>
+        <input
+          type="number"
+          name="OverallQual"
+          value={formData.OverallQual}
+          onChange={handleChange}
+        />
 
-      <div className="ticks"></div>
+        <label>Living Area (sq ft)</label>
+        <input
+          type="number"
+          name="GrLivArea"
+          value={formData.GrLivArea}
+          onChange={handleChange}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <label>Garage Cars</label>
+        <input
+          type="number"
+          name="GarageCars"
+          value={formData.GarageCars}
+          onChange={handleChange}
+        />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <label>Basement Area (sq ft)</label>
+        <input
+          type="number"
+          name="TotalBsmtSF"
+          value={formData.TotalBsmtSF}
+          onChange={handleChange}
+        />
+
+        <label>Full Bathrooms</label>
+        <input
+          type="number"
+          name="FullBath"
+          value={formData.FullBath}
+          onChange={handleChange}
+        />
+
+        <label>Year Built</label>
+        <input
+          type="number"
+          name="YearBuilt"
+          value={formData.YearBuilt}
+          onChange={handleChange}
+        />
+
+        <label>Neighborhood (e.g., CollgCr)</label>
+        <input
+          type="text"
+          name="Neighborhood"
+          value={formData.Neighborhood}
+          onChange={handleChange}
+        />
+
+        <button type="submit">Predict Price</button>
+      </form>
+
+      {prediction && (
+        <h2>Predicted Price: ${prediction.toLocaleString()}</h2>
+      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
+  );
 }
 
-export default App
+export default App;
